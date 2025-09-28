@@ -29,7 +29,7 @@ class GenreList(APIView):
 
 
 class GenreDetail(APIView):
-    def get_object(self, pk: int) -> Response:
+    def get_object(self, pk: int) -> Genre:
         return get_object_or_404(Genre, pk=pk)
 
     def get(self, request, pk: int) -> Response:
@@ -115,5 +115,13 @@ class CinemaHallDetail(
     serializer_class = CinemaHallSerializer
 
 
-class CinemaHallViewSet(viewsets.GenericViewSet):
-    pass
+class CinemaHallViewSet(
+    viewsets.GenericViewSet,
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin
+):
+    queryset = CinemaHall.objects.all()
+    serializer_class = CinemaHallSerializer
